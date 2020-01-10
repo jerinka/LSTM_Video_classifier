@@ -18,7 +18,9 @@ print (data2.shape)
 X_train = data1.reshape(1, data1.shape[0], data1.shape[1], data1.shape[2], 1)
 Y_train = data2.reshape(1, data2.shape[0])
 #(samples,time, rows, cols, channels)
-
+print (X_train.shape)
+print (Y_train.shape)
+import pdb;pdb.set_trace()
 
 def getmodel1():
     model = Sequential()
