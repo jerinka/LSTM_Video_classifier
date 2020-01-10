@@ -7,7 +7,7 @@ from keras.layers import Conv2D
 from keras.layers import MaxPooling2D
 from keras.layers import LSTM
 from keras.layers import Dense
-from keras.layers import Flatten,Dropout,co
+from keras.layers import Flatten,Dropout
 from keras.layers import TimeDistributed,GlobalAveragePooling2D
 
 timesteps = 5
@@ -17,7 +17,7 @@ height = 100
 def get_clstm():
     model = Sequential()
     model.add(TimeDistributed(Conv2D(2, (2,2), activation= 'relu' ), input_shape=(None,width,height,1)))
-  x = ConvLSTM2D(nb_filter=c,nb_row=3,nb_col=3,border_mode='same',return_sequences=True)(input_img)
+    x = ConvLSTM2D(nb_filter=c,nb_row=3,nb_col=3,border_mode='same',return_sequences=True)(input_img)
 
 def get_lstm_model1():
     model = Sequential()
@@ -103,7 +103,7 @@ model.fit(X, y, batch_size=1, epochs=10)
 # evaluate model
 X, y = generate_examples(timesteps,width,height, 10)
 loss, acc = model.evaluate(X, y, verbose=0)
-print( 'loss:'loss, 'acc:', acc*100)
+print( 'loss:',loss, 'acc:', acc*100)
 
 # prediction on new data
 X, y = generate_examples(timesteps,width,height, 1)

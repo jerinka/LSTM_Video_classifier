@@ -1,3 +1,15 @@
+import numpy as np
+from sklearn.model_selection import train_test_split
+from keras.utils import to_categorical
+from keras.models import Sequential
+from keras.layers import Conv2D
+from keras.layers import MaxPooling2D
+from keras.layers import LSTM, ConvLSTM2D
+from keras.layers import Dense
+from keras.layers import Flatten,Dropout
+from keras.layers import TimeDistributed,GlobalAveragePooling2D
+
+
 np.random.seed(0)
 data = np.random.randint(low=1,high=9,size=(99, 7, 11, 11, 3))
 #(samples, timeshifts, heigt, width, nchannels)
@@ -52,12 +64,12 @@ model.add(ConvLSTM2D(16, kernel_size=(3,3), activation='sigmoid',padding='same',
                      return_sequences=True))
 model.add(ConvLSTM2D(16, kernel_size=(3,3), activation='sigmoid',padding='same'))
 model.add(Flatten())
-model.add(Dense(len(ctypes), activation='softmax'))
+model.add(Dense(len(classes), activation='softmax'))
 model.summary()
 
-model.compile(loss='categorical_crossentropy', optimizer='adam')
+model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=[ 'accuracy' ])
 
-model.fit(X_train, Y_train_, epochs=10, verbose=10, batch_size=32)
+model.fit(X_train, Y_train_, epochs=20, verbose=1, batch_size=32)
 
 
 
