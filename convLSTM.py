@@ -1,7 +1,7 @@
 import numpy as np, scipy.ndimage, matplotlib.pyplot as plt
-from keras.models import Sequential,Model
-from keras.layers import Dense, Dropout, Activation, Flatten,Input,TimeDistributed,BatchNormalization
-from keras.layers import Convolution2D, ConvLSTM2D, MaxPooling2D, UpSampling2D,GlobalAveragePooling2D,AveragePooling3D,Reshape
+from tensorflow.keras.models import Sequential,Model
+from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten,Input,TimeDistributed,BatchNormalization
+from tensorflow.keras.layers import Convolution2D, ConvLSTM2D, MaxPooling2D, UpSampling2D,GlobalAveragePooling2D,AveragePooling3D,Reshape
 from sklearn.metrics import accuracy_score, confusion_matrix, cohen_kappa_score
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 np.random.seed(123)
@@ -30,7 +30,12 @@ def getmodel1():
                          return_sequences=True))
     model.add(ConvLSTM2D(8, kernel_size=(3,3), activation='sigmoid',padding='same'))
     model.add(GlobalAveragePooling2D())
-    model.add(Dense(10, activation='softmax'))  # output shape: (None, 10)
+    model.add(Dense(9, activation='softmax'))  # output shape: (None, 10)
+    
+    model.compile(loss='mean_squared_error',
+              optimizer='adam',
+              metrics=['accuracy'])
+    
     print (model.summary())
     return model
 
@@ -110,15 +115,16 @@ def getmodel3():
     return model
 
 
-model = getmodel3()
+model = getmodel1()
+
 model.fit(X_train, Y_train, 
           batch_size=1, epochs=10, verbose=1)
 
 model.save('model.h5')
-import pdb;pdb.set_trace()
+#import pdb;pdb.set_trace()
 
-x,y = model.evaluate(X_train, Y_train, verbose=0)
-print (x,y)
+pred,acc = model.evaluate(X_train, Y_train, verbose=0)
+print (pred,Y_train,acc)
 
 
 

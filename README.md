@@ -5,7 +5,9 @@ Video classification using CNN LSTM
 
 ## demo codes
 
-```python3 cnnlstm2.py```
+## Video classification TD CNN LSTM
+```python3 cnn_lstm.py```
+
 
 ```python3 convLSTM.py```
 

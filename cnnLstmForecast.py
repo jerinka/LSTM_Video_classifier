@@ -5,13 +5,16 @@ from numpy import array
 from pandas import read_csv
 from sklearn.metrics import mean_squared_error
 from matplotlib import pyplot
-from keras.models import Sequential
-from keras.layers import Dense
-from keras.layers import Flatten
-from keras.layers import LSTM
-from keras.layers import RepeatVector
-from keras.layers import TimeDistributed
-from keras.layers import ConvLSTM2D
+import tensorflow as tf
+#import pdb;pdb.set_trace()
+
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import Flatten
+from tensorflow.keras.layers import LSTM
+from tensorflow.keras.layers import RepeatVector
+from tensorflow.keras.layers import TimeDistributed
+from tensorflow.keras.layers import ConvLSTM2D
 
 # split a univariate dataset into train/test sets
 def split_dataset(data):
@@ -126,18 +129,36 @@ def evaluate_model(train, test, n_steps, n_length, n_input):
 	score, scores = evaluate_forecasts(test[:, :, 0], predictions)
 	return score, scores
 
-# load the new file
-dataset = read_csv('household_power_consumption_days.csv', header=0, infer_datetime_format=True, parse_dates=['datetime'], index_col=['datetime'])
-# split into train and test
-train, test = split_dataset(dataset.values)
-# define the number of subsequences and the length of subsequences
-n_steps, n_length = 2, 7
-# define the total days to use as input
-n_input = n_length * n_steps
-score, scores = evaluate_model(train, test, n_steps, n_length, n_input)
-# summarize scores
-summarize_scores('lstm', score, scores)
-# plot scores
-days = ['sun', 'mon', 'tue', 'wed', 'thr', 'fri', 'sat']
-pyplot.plot(days, scores, marker='o', label='lstm')
-pyplot.show()
+if __name__=='__main__':
+    
+    '''
+    import wget
+    url='https://github.com/Talish-wiz/Improved-Home-Electrcity-Forecasting-Streamlit/blob/master/household_power_consumption_days.csv'
+    wget.download(url)
+    '''
+    
+    '''
+    from io import BytesIO
+    from urllib.request import urlopen
+    from zipfile import ZipFile
+    zipurl = 'https://archive.ics.uci.edu/ml/machine-learning-databases/00235/household_power_consumption.zip'
+    with urlopen(zipurl) as zipresp:
+        with ZipFile(BytesIO(zipresp.read())) as zfile:
+            zfile.extractall('.')
+    '''
+       
+    # load the new file
+    dataset = read_csv('household_power_consumption_days.csv', header=0, infer_datetime_format=True, parse_dates=['datetime'], index_col=['datetime'])
+    # split into train and test
+    train, test = split_dataset(dataset.values)
+    # define the number of subsequences and the length of subsequences
+    n_steps, n_length = 2, 7
+    # define the total days to use as input
+    n_input = n_length * n_steps
+    score, scores = evaluate_model(train, test, n_steps, n_length, n_input)
+    # summarize scores
+    summarize_scores('lstm', score, scores)
+    # plot scores
+    days = ['sun', 'mon', 'tue', 'wed', 'thr', 'fri', 'sat']
+    pyplot.plot(days, scores, marker='o', label='lstm')
+    pyplot.show()
